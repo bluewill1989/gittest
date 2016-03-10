@@ -1252,5 +1252,28 @@
 	</constructor-arg>
 	</bean>
 	<!-- add by weizenan 2016-01-14 ed -->
+
+	<!-- add by weizenan 2016-03-10 内蒙通过预付卡接入蓝翔网络 start -->
+	<bean id="neimengBestPayOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.bestpay.BestPayOrderService">
+		<property name="name" value="蓝翔网络消费下单" />
+		<property name="msgType" value="67101522" />
+		<property name="productName" value="翼支付" />
+	</bean>
+	
+	<bean id="neimengBestPayPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.bestpay.BestPayPayService">
+		<property name="name" value="蓝翔网络消费支付" />
+		<property name="msgType" value="27101522" />
+		<property name="errMap" ref="neimengBestPayErrMap" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="saleType" value="56" />
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="52"/>
+		<property name="isSimulate" value="false" />
+		<property name="target" value="prepaidCard" />
+	</bean>
+	<!-- add by weizenan 2016-03-15 ed -->
 </beans>	
 	
