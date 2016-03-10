@@ -955,13 +955,13 @@
 	<!-- add by lkw 2015-09-09 内蒙微信支付 start -->
 	<bean id="neiMengWeiXinOrderService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinOrderService">
-		<property name="name" value="内蒙(扫码支付)主扫下单" />
+		<property name="name" value="内蒙主扫下单" />
 		<property name="msgType" value="61047605" />
 		<property name="productName" value="内蒙扫码支付" />
 	</bean>
 	<bean id="neiMengWeiXinPayService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinPayService">
-		<property name="name" value="内蒙(扫码支付)主扫支付" />
+		<property name="name" value="内蒙主扫支付" />
 		<property name="msgType" value="21047605" />
 		<property name="target" value="prepaidCard" />
 		<property name="merchantValidate" value="bcs_bound"/>
@@ -974,7 +974,7 @@
 
 	<bean id="neiMengWeiXinCancelService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinCancelService">
-		<property name="name" value="内蒙(扫码支付)主扫撤销" />
+		<property name="name" value="内蒙主扫撤销" />
 		<property name="msgType" value="51047605" />
 		<property name="target" value="prepaidCard" />
 		<property name="saleType" value="55" />
@@ -986,7 +986,7 @@
 	</bean>
 	<bean id="neiMengWeiXinStateQueryService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinStateQueryService">
-		<property name="name" value="内蒙(扫码支付)主扫订单状态查询" />
+		<property name="name" value="内蒙主扫订单状态查询" />
 		<property name="msgType" value="11047605" />
 		<property name="target" value="prepaidCard" />
 		<property name="merchantValidate" value="bcs_bound"/>
@@ -997,7 +997,7 @@
 	</bean>
 	<bean id="neiMengWeiXinScanCodePreOrderService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderService">
-		<property name="name" value="内蒙(扫码支付)被扫支付下单" />
+		<property name="name" value="内蒙被扫支付下单" />
 		<property name="msgType" value="67101605" />
 		<property name="productName" value="内蒙扫码支付" />
 	</bean>
@@ -1005,7 +1005,7 @@
 	
 	<bean id="neiMengWeiXinScanCodePreOrderPayService"
 			class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderPayService">
-		<property name="name" value="内蒙(扫码支付)被扫支付" />
+		<property name="name" value="内蒙被扫支付" />
 		<property name="msgType" value="27101605" />
 		<property name="target" value="prepaidCard" />
 		<property name="saleType" value="55" />
@@ -1018,7 +1018,7 @@
 	
 	<bean id="neiMengWeiXinScanCodePreOrderStateQueryService"
 		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderStateQueryService">
-		<property name="name" value="内蒙(扫码支付)被扫状态查询" />
+		<property name="name" value="内蒙被扫状态查询" />
 		<property name="msgType" value="17101605" />
 		<property name="target" value="prepaidCard" />
 		<property name="isSimulate" value="false"/>
