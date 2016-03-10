@@ -1,0 +1,1256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 移动收单 start -->
+	<bean id="neimengacquireorder"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquireOrderService">
+		<property name="name" value="内蒙收单下单" />
+		<property name="msgType" value="61047221" />
+		<!-- add by xiliang 2015-1-9 签名上送TUDP和支付的不一样 start -->
+		<property name="signTpdu" value="${remoteTPDUNeiMengSign}" />
+		<!-- add by xiliang 2015-1-9 签名上送TUDP和支付的不一样 end -->
+		<property name="loginKey" value="neimeng" />
+	</bean>
+	<bean id="neimengacquirepay"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquirePayService">
+		<property name="name" value="内蒙收单支付" />
+		<property name="msgType" value="21047221" />
+		<property name="loginKey" value="neimeng" />
+		<property name="merchantValidate" value="bcs_bound" /> 
+		<property name="appType" value="68" />
+		<property name="appSubType" value="31" />
+		<property name="isSimulate" value="false" />
+	</bean>
+
+	<bean id="neimengacquirereverse"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquireReverseService">
+		<property name="name" value="内蒙收单冲正" />
+		<property name="msgType" value="41047221" />
+		<property name="loginKey" value="neimeng" />
+	</bean>
+
+	<bean id="neimengacquirecancel"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquireCancelService">
+		<property name="name" value="内蒙收单撤销" />
+		<property name="msgType" value="51047221" />
+		<property name="loginKey" value="neimeng" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="68" />
+		<property name="appSubType" value="31" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<bean id="neimengacquirecancelreverse"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquireCancelReverseService">
+		<property name="name" value="内蒙收单撤销冲正" />
+		<property name="msgType" value="47102221" />
+		<property name="loginKey" value="neimeng" />
+	</bean>
+	<!-- add by yuanzhen 20150703 st -->
+	<bean id="discountCardBalanceQuery"
+		  class="com.buybal.ums.qmf.impl.neimeng.acquire.DiscountCardBalanceQueryService">
+		<property name="name" value="内蒙收单0元支付，用余额查询代替。"/>
+		<property name="isSimulate" value="false"/>
+		<property name="msgType" value="27102301" />
+		<property name="errMap" ref="balanceQueryErrMap" />
+		<property name="loginKey" value="ulink_balance" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="68" />
+		<property name="appSubType" value="31" />
+	</bean>
+	<!-- add by yuanzhen 20150703 ed -->
+	<!-- 移动收单 end -->
+	<!-- 账单随心付 start -->
+	<bean id="billNoQuery"
+		class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoQueryService">
+		<property name="name" value="账单随心付查询" />
+		<property name="msgType" value="11047304" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="billNoOrder"
+		class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoOrderService">
+		<property name="name" value="账单随心付下单" />
+		<property name="msgType" value="61047304" />
+		<property name="productName" value="账单随心付" />
+		<property name="loginKey" value="default" />
+	</bean>
+	<bean id="billNoPay" class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoPayService">
+		<property name="name" value="账单随心付支付" />
+		<property name="msgType" value="21047304" />
+		<property name="loginKey" value="default" />
+		<property name="merchantValidate" value="qmf" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="billNoConfirm"
+		class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoConfirmService">
+		<property name="name" value="账单随心付销账" />
+		<property name="msgType" value="31047304" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="billNoReverse"
+		class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoReverseService">
+		<property name="name" value="账单随心付冲正" />
+		<property name="msgType" value="41047304" />
+		<property name="loginKey" value="default" />
+	</bean>
+	<bean id="billNoTradeStateQuery"
+		class="com.buybal.ums.qmf.impl.neimeng.billno.BillNoTradeStateQueryService">
+		<property name="name" value="账单随心付状态查询" />
+		<property name="msgType" value="17102304" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<!-- 账单随心付 end -->
+	<!-- 内蒙转账 start -->
+	<bean id="neimengtransferquery"
+		class="com.buybal.ums.qmf.impl.neimeng.transfer.NeimengTransferQueryService">
+		<property name="name" value="内蒙转账手续费查询" />
+		<property name="msgType" value="11047305" />
+		<property name="loginKey" value="neimeng" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="neimengtransferorder"
+		class="com.buybal.ums.qmf.impl.neimeng.transfer.NeimengTransferOrderService">
+		<property name="name" value="内蒙转账下单" />
+		<property name="msgType" value="61047305" />
+		<property name="loginKey" value="neimeng" />
+		<property name="productName" value="内蒙转账" />
+	</bean>
+	<bean id="neimengtransferpay"
+		class="com.buybal.ums.qmf.impl.neimeng.transfer.NeimengTransferPayService">
+		<property name="name" value="内蒙转账支付" />
+		<property name="msgType" value="21047305" />
+		<property name="loginKey" value="neimeng" />
+		<property name="merchantValidate" value="qmf" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="neimengtransferreverse"
+		class="com.buybal.ums.qmf.impl.neimeng.transfer.NeimengTransferReverseService">
+		<property name="name" value="内蒙转账冲正" />
+		<property name="msgType" value="41047305" />
+		<property name="loginKey" value="neimeng" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- 内蒙转账 end -->
+	<!-- 联通缴费 start -->
+	<bean id="neimengunicomquery"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengUnicomQueryService">
+		<property name="name" value="内蒙联通缴费查询" />
+		<property name="msgType" value="11047202" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="neimengunicomorder"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengUnicomOrderService">
+		<property name="name" value="内蒙联通缴费下单" />
+		<property name="msgType" value="61047202" />
+		<property name="productName" value="内蒙联通缴费" />
+		<property name="loginKey" value="default" />
+	</bean>
+	<bean id="neimengunicompay"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengUnicomPayService">
+		<property name="name" value="内蒙联通缴费支付" />
+		<property name="msgType" value="21047202" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+		<property name="merchantValidate" value="bcs_bound" />
+	</bean>
+	<bean id="neimengunicomconfirm"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengUnicomConfirmService">
+		<property name="name" value="内蒙联通缴费销账" />
+		<property name="msgType" value="31047202" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="neimengunicomreverse"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengUnicomReverseService">
+		<property name="name" value="内蒙联通缴费冲正" />
+		<property name="msgType" value="41047202" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- 联通缴费 end -->
+
+	<!-- add by xiliang 2014-5-23 start -->
+	<bean id="acpuirePrintSalesSlipPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquirePrintSalesSlipPicImpl" />
+	<bean id="transferPrintSalesSlipPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.transfer.NeiMengTransferPrintSalesSlipPicImpl">
+		<property name="mobileSMSMap" ref="mobileSMSMap" />
+	</bean>
+	<!-- add by xiliang 2014-5-23 end -->
+	<!-- 恒泰 -->
+	<bean id="accountCheckServcie"
+		class="com.buybal.ums.qmf.impl.neimeng.hengtai.AccountCheckServcie">
+		<property name="name" value="证劵资金卡卡信息验证接口" />
+		<property name="msgType" value="11000362" />
+		<property name="loginKey" value="neimeng_precard" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<bean id="prepaidCardPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.hengtai.PrepaidCardPayService">
+		<property name="name" value="证劵资金卡支付接口接口" />
+		<property name="msgType" value="21000361" />
+		<property name="loginKey" value="neimeng_precard" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<bean id="SMSCheckCodeService"
+		class="com.buybal.ums.qmf.impl.neimeng.hengtai.SMSCheckCodeService">
+		<property name="name" value="证劵资金卡支付短信发送接口" />
+		<property name="msgType" value="11000363" />
+		<property name="loginKey" value="neimeng_precard" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<!-- add by xiliang 2014-8-19 start -->
+	<bean id="neimengicuploadconfirm" class="com.buybal.ums.qmf.impl.neimeng.iccard.IcUploadService">
+		<property name="name" value="IC脚本结果及/TC/冲正上送" />
+		<property name="msgType" value="41047331" />
+		<property name="loginKey" value="neimeng" />
+		<property name="target" value="origin" />
+	</bean>
+	<bean id="neimengscriptloadconfirm"
+		class="com.buybal.ums.qmf.impl.neimeng.iccard.ScriptUploadService">
+		<property name="name" value="IC脚本结果上送" />
+		<property name="msgType" value="41047332" />
+		<property name="loginKey" value="neimeng" />
+		<property name="target" value="origin" />
+	</bean>
+	<bean id="neimengtcuploadconfirm" class="com.buybal.ums.qmf.impl.neimeng.iccard.TcUploadService">
+		<property name="name" value="IC卡TC上送" />
+		<property name="msgType" value="41047333" />
+		<property name="loginKey" value="neimeng" />
+		<property name="target" value="origin" />
+	</bean>
+	<!-- add by xiliang 2014-8-19 end -->
+
+	<!-- add by xiliang 2014-10-10 燃气缴费 start -->
+	<bean id="meiMengGasOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.gas.NeiMengGasOrderService">
+		<property name="name" value="内蒙燃气下单" />
+		<property name="msgType" value="61047104" />
+		<property name="productName" value="内蒙燃气" />
+	</bean>
+	<bean id="meiMengGasPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.gas.NeiMengGasPayService">
+		<property name="name" value="内蒙燃气缴费" />
+		<property name="msgType" value="21047104" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="meiMengGasqueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.gas.NeiMengGasQueryService">
+		<property name="name" value="内蒙燃气账单查询" />
+		<property name="msgType" value="11047104" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- add by xiliang 2014-10-10 燃气缴费 end -->
+
+	<!-- add by xiliang 2014-10-10 电力缴费 start -->
+	<bean id="neiMengPowerQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.power.NeiMengPowerQueryService">
+		<property name="name" value="内蒙电力账单查询" />
+		<property name="msgType" value="11047102" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="neiMengPowerOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.power.NeiMengPowerOrderService">
+		<property name="name" value="内蒙电力下单" />
+		<property name="msgType" value="61047102" />
+		<property name="productName" value="内蒙电力" />
+	</bean>
+	<bean id="neiMengPowerPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.power.NeiMengPowerPayService">
+		<property name="name" value="内蒙电力缴费" />
+		<property name="msgType" value="21047102" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="neiMengPowerCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.power.NeiMengPowerCancelService">
+		<property name="name" value="内蒙电力缴费撤销" />
+		<property name="msgType" value="51047104" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<!-- add by xiliang 2014-10-10 电力缴费 end -->
+
+	<!-- add by xiliang 2014-10-10 电视缴费 start -->
+	<bean id="neiMengCableTVOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.tv.NeiMengCableTVOrderService">
+		<property name="name" value="内蒙有线下单" />
+		<property name="msgType" value="61047210" />
+		<property name="productName" value="内蒙有线" />
+	</bean>
+	<bean id="neiMengCableTVPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.tv.NeiMengCableTVPayService">
+		<property name="name" value="内蒙有线缴费" />
+		<property name="msgType" value="21047210" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="neiMengCableTVQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.tv.NeiMengCableTVQueryService">
+		<property name="name" value="内蒙有线账单查询" />
+		<property name="msgType" value="11047210" />
+		<property name="loginKey" value="default" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<!-- add by xiliang 2014-10-10 电视缴费 end -->
+
+	<!-- 内蒙 伊利资金归集 2014-09-16 start -->
+	<bean id="capitalAccumulationQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.yili.CapitalAccumulationQueryService">
+		<property name="name" value="伊利资金归集查询" />
+		<property name="msgType" value="21047547" />
+		<property name="loginKey" value="neimeng_yili" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="1" />
+		<!-- edit by xiliang 2015-4-27 st  3 -->
+		<property name="appSubType" value="3" />
+		<!-- edit by xiliang 2015-4-27 st  3 -->
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="capitalAccumulationOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.yili.CapitalAccumulationOrderService">
+		<property name="name" value="伊利资金归集下单" />
+		<property name="msgType" value="61047547" />
+		<property name="loginKey" value="neimeng_yili" />
+		<property name="productName" value="伊利资金归集" />
+	</bean>
+	<bean id="capitalAccumulationPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.yili.CapitalAccumulationPayService">
+		<property name="name" value="伊利资金归集支付" />
+		<property name="msgType" value="71047547" />
+		<property name="loginKey" value="neimeng_yili" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="1" />
+		<!-- edit by xiliang 2015-4-27 st  3 -->
+		<property name="appSubType" value="3" />
+		<!-- edit by xiliang 2015-4-27 st  3 -->
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="capitalAccumulationConfirmService"
+		class="com.buybal.ums.qmf.impl.neimeng.yili.CapitalAccumulationConfirmService">
+		<property name="name" value="伊利资金归集销账" />
+		<property name="msgType" value="31047547" />
+		<property name="loginKey" value="neimeng_yili" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="capitalAccumulationPrintSalesPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.yili.CapitalAccumulationPrintSalesPicImpl">
+	</bean>
+	
+	<!-- 内蒙 伊利资金归集 2014-09-16 end -->
+
+	<!-- add by lkw 2014-11-03 内蒙自来水缴费 start -->
+	<bean id="neiMengWaterQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterQueryService">
+		<property name="name" value="内蒙自来水账单查询" />
+		<property name="msgType" value="17101101" />
+		<property name="errMap" ref="neimengwaterErrMap"/>
+		<property name="loginKey" value="neimengwater" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="neiMengWaterOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterOrderService">
+		<property name="name" value="内蒙自来水下单" />
+		<property name="msgType" value="67101101" />
+		<property name="productName" value="内蒙自来水" />
+	</bean>
+	<bean id="neiMengWaterPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterPayService">
+		<property name="name" value="内蒙自来水缴费" />
+		<property name="msgType" value="27101101" />
+		<property name="errMap" ref="neimengwaterErrMap"/>
+		<property name="loginKey" value="neimengwater" />
+		<!-- add by xiliang 2015-05-18 start -->
+		<property name="bizAreaCode" value="1900"/>
+		<property name="bizProductCode" value="5601"/>
+		<!-- add by xiliang 2015-05-18 end -->
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<bean id="neiMengWaterTransferReverseService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterTransferReverseService">
+		<property name="name" value="内蒙自来水冲正" />
+		<property name="msgType" value="47101101" />
+		<property name="errMap" ref="neimengwaterErrMap"/>
+		<property name="loginKey" value="neimengwater" />
+	</bean>
+
+	<bean id="neiMengWaterConfirmService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterConfirmService">
+		<property name="name" value="内蒙自来水缴费确认" />
+		<property name="msgType" value="27103101" />
+		<property name="errMap" ref="neimengwaterErrMap" />
+		<property name="loginKey" value="neimengwater" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+	<bean id="neiMengWaterThirdCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterThirdCancelService">
+		<property name="name" value="内蒙自来水撤销确认（去第三方）" />
+		<property name="msgType" value="27104101" />
+		<property name="errMap" ref="neimengwaterErrMap" />
+		<property name="loginKey" value="neimengwater" />
+		<property name="isSimulate" value="true" />
+	</bean>
+
+
+	<bean id="neiMengWaterCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.water.NeiMengWaterCancelService">
+		<property name="name" value="内蒙自来水缴费撤销" />
+		<property name="msgType" value="27102101" />
+		<property name="errMap" ref="neimengwaterErrMap" />
+		<property name="loginKey" value="neimengwater" />
+	</bean>
+
+	<!-- add by lkw 2014-11-03 自来水缴费 end -->
+
+	<!-- add by yuanzhen 20150728 内蒙古包头市自来水缴费 start -->
+	<bean id="baoTouWaterQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterQueryService">
+		<property name="name" value="包头自来水账单查询" />
+		<property name="msgType" value="18701101" />
+		<property name="errMap" ref="baotouWaterErrMap"/>
+		<property name="loginKey" value="baotouwater" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baoTouWaterOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterOrderService">
+		<property name="name" value="包头自来水缴费--下单" />
+		<property name="msgType" value="68701101" />
+		<property name="productName" value="包头自来水" />
+	</bean>
+	<bean id="baoTouWaterPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterPayService">
+		<property name="name" value="包头自来水缴费--支付" />
+		<property name="msgType" value="28701101" />
+		<property name="errMap" ref="baotouWaterErrMap"/>
+		<property name="loginKey" value="baotouwater" />
+		<property name="bizAreaCode" value="1900"/>
+		<property name="bizProductCode" value="5601"/>
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baoTouWaterTransferReverseService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterTransferReverseService">
+		<property name="name" value="包头自来水缴费--冲正" />
+		<property name="msgType" value="48701101" />
+		<property name="errMap" ref="baotouWaterErrMap"/>
+		<property name="loginKey" value="baotouwater" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baoTouWaterConfirmService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterConfirmService">
+		<property name="name" value="包头自来水缴费--销账" />
+		<property name="msgType" value="38701101" />
+		<property name="errMap" ref="baotouWaterErrMap" />
+		<property name="loginKey" value="baotouwater" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baoTouWaterThirdCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterThirdCancelService">
+		<property name="name" value="包头自来水缴费--撤销（去第三方）" />
+		<property name="msgType" value="58701101" />
+		<property name="errMap" ref="baotouWaterErrMap" />
+		<property name="loginKey" value="baotouwater" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baoTouWaterCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.baotou.BaoTouWaterCancelService">
+		<property name="name" value="包头自来水缴费--撤销" />
+		<property name="msgType" value="38702101" />
+		<property name="errMap" ref="baotouWaterErrMap" />
+		<property name="loginKey" value="baotouwater" />
+		<property name="isSimulate" value="true"/>
+	</bean>
+	<bean id="baotouWaterErrMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="M1" value="数据校验失败"/>
+				<entry key="M2" value="缺少流水号"/>
+				<entry key="M3" value="缺少交易机构代码或代码不正确"/>
+				<entry key="M4" value="缺少交易代码或交易代码不正确"/>
+				<entry key="M5" value="停机维护中"/>
+				<entry key="M6" value="客户代码不存在"/>
+				<entry key="M7" value="特殊用户不用缴费"/>
+				<entry key="M8" value="当前用户已经缴费"/>
+				<entry key="M9" value="金额小于应缴金额"/>
+				<entry key="MA" value="交易不存在"/>
+				<entry key="MB" value="交易重复"/>
+				<entry key="MC" value="欠费超出月份，应到营业所缴纳"/>
+				<entry key="MD" value="缴费金额超出上线"/>
+				<entry key="ME" value="缴费记录已锁定，无法销帐"/>
+				<entry key="MF" value="数据库处理错误"/>
+				<entry key="MG" value="其他错误"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	<!-- add by yuanzhen 20150728 内蒙古包头市自来水缴费 end -->
+
+	<!-- add by xiliang 2014-11-16 内蒙 恒泰证劵手机预付卡支付 start -->
+	<bean id="neimengPrepaidCardOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardOrderService">
+		<property name="name" value="证劵资金卡缴费下单" />
+		<property name="msgType" value="67101223" />
+		<property name="loginKey" value="alliance" />
+		<property name="productName" value="恒泰证劵预付卡缴费" />
+	</bean>
+	<bean id="neimengPrepaidCardCommonPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardPayService">
+		<property name="name" value="恒泰证劵预付卡优惠消费" />
+		<property name="msgType" value="27105223" />
+		<property name="loginKey" value="alliance" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="53" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="appSubType" value="32" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="isSimulate" value="false" />
+	</bean>
+
+	<bean id="neimengPrepaidCardCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardCancelService">
+		<property name="name" value="证劵资金卡支付撤销" />
+		<property name="msgType" value="27102223" />
+		<property name="loginKey" value="alliance" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="53" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="appSubType" value="32" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	
+	<bean id="neimengwaterErrMap" class="java.util.HashMap">
+			<constructor-arg>
+				<map>
+					<entry key="C4" value="缴费金额不能小于查询欠费金额" />
+					<entry key="D3" value="用户编号不存在或行业系统异常" />
+					<entry key="D4" value="自来水系统维护 " />
+				</map>
+			</constructor-arg>
+		</bean>
+	
+	<!-- add by lkw 2014-11-03  自来水缴费  end -->
+	
+	<bean id="neiMengPrepaidCardRefundQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardRefundQueryService">
+		<property name="name" value="证劵资金卡退货金额查詢" />
+		<property name="msgType" value="17101223" />
+		<property name="productName" value="证劵资金卡退货金额查詢" />
+	</bean>
+	
+	<bean id="neiMengPrepaidCardRefundOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardRefundOrderService">
+		<property name="name" value="证劵资金卡退货下单下单" />
+		<property name="msgType" value="67102223" />
+		<property name="loginKey" value="alliance" />
+		<property name="productName" value="恒泰证劵预付卡退货" />
+	</bean>
+	
+	<bean id="neimengPrepaidCardRefundService"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardRefundService">
+		<property name="name" value="证劵资金卡退货" />
+		<property name="msgType" value="27107223" />
+		<property name="loginKey" value="alliance" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="isSimulate" value="false" />
+		<property name="appType" value="53" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="appSubType" value="32" />
+		<!-- edit by xiliang 2015-4-27 ed  32 -->
+	</bean>
+	
+	<bean id="neimengPrepaidCardPrintSalesSlipPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.prepaidcard.PrepaidCardPrintSalesSlipPicImpl" />
+	<!-- add by xiliang 2014-11-16 内蒙 恒泰证劵手机预付卡支付 end -->
+
+	<!-- add by xiliang 2014-11-16 内蒙 恒泰证劵手机预付卡 余额查询 start -->
+	<bean id="neimengPrepaidCardBalanceOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.balance.PrepaidCardBalanceOrderService">
+		<property name="name" value="证劵资金卡余额查询下单" />
+		<property name="msgType" value="61047301" />
+		<property name="loginKey" value="alliance" />
+		<property name="productName" value="恒泰证劵预付卡余额查询" />
+	</bean>
+	<bean id="neimengPrepaidCardBalanceQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.balance.PrepaidCardBalanceQueryService">
+		<property name="name" value="证劵资金卡余额查询" />
+		<property name="msgType" value="21047301" />
+		<property name="loginKey" value="alliance" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="53" />
+		<!-- edit by xiliang 2015-4-27 st  32 -->
+		<property name="appSubType" value="32" />
+		<!-- edit by xiliang 2015-4-27 ed  32 -->
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- add by xiliang 2014-11-16 内蒙 恒泰证劵手机预付卡 余额查询 end -->
+	
+	<!-- add by wjg 2014-10-10 end-->
+    <!-- 联通缴费 start -->
+	<bean id="neimengchinaunicomquery"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengChinaUnicomQueryService">
+		<property name="name" value="内蒙联通缴费查询" />
+		<property name="msgType" value="11047207" />
+		<property name="loginKey" value="neimengunicom" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="neimengchinaunicomorder"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengChinaUnicomOrderService">
+		<property name="name" value="内蒙联通缴费下单" />
+		<property name="msgType" value="61047207" />
+		<property name="productName" value="内蒙联通缴费" />
+		<property name="loginKey" value="neimengunicom" />
+	</bean>
+	<bean id="neimengchinaunicompay"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengChinaUnicomPayService">
+		<property name="name" value="内蒙联通缴费支付" />
+		<property name="msgType" value="21047207" />
+		<property name="loginKey" value="neimengunicom" />
+		<property name="isSimulate" value="false" />
+		
+	</bean>
+	<bean id="neimengchinaunicomconfirm"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengChinaUnicomConfirmService">
+		<property name="name" value="内蒙联通缴费销账" />
+		<property name="msgType" value="31047207" />
+		<property name="loginKey" value="neimengunicom" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<bean id="neimengchinaunicomreverse"
+		class="com.buybal.ums.qmf.impl.neimeng.unicom.NeimengChinaUnicomReverseService">
+		<property name="name" value="内蒙联通缴费冲正" />
+		<property name="msgType" value="41047207" />
+		<property name="loginKey" value="neimengunicom" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- 联通缴费 end -->
+
+    <!-- 内蒙社保 start -->
+    <bean id="neimengsocialsecurityapplyprogressquery"
+        class="com.buybal.ums.qmf.impl.neimeng.socialsecurity.NeiMengSocialSecurityApplyProgressQuery">
+        <property name="name" value="内蒙社保申领进度查询" />
+        <property name="msgType" value="17102321" />
+        <property name="loginKey" value="default" />
+        <property name="isSimulate" value="true" />
+    </bean>
+    <bean id="neimengsocialsecurityinsurancequery"
+        class="com.buybal.ums.qmf.impl.neimeng.socialsecurity.NeiMengSocialSecurityInsuranceQuery">
+        <property name="name" value="内蒙社保保险相关查询" />
+        <property name="msgType" value="17103321" />
+        <property name="loginKey" value="default" />
+        <property name="isSimulate" value="true" />
+    </bean>
+    <!-- 内蒙社保 end -->
+    
+<!-- add by wjg 2015-1-19 -->
+	<bean id="neiMengAgriculturalBalanceServicequery" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalBalanceQueryService">
+		<property name="name" value="农资收购备付金余额查询"></property>
+		<property name="msgType" value="11047537"></property>
+		<property name="target" value="ulink"></property>
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	
+	<bean id="neiMengAgriculturalBalanceServiceorder" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalBalanceOrderService">
+		<property name="name" value="全卡万通农资收购充值下单" />
+		<property name="msgType" value="61047537" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulink" />
+		<property name="productName" value="农资收购备付金充值" />
+		<property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+	</bean>
+	
+	<bean id="neiMengAgriculturalBalanceServicepay" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalBalancePayService">
+		<property name="name" value="全卡万通农资收购充值支付" />
+		<property name="msgType" value="21047537" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulink" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	
+	<bean id="neiMengAgriculturalPaymentServiceorder" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalPaymentOrderService">
+		<property name="name" value="农资收购代付下单" />
+		<property name="msgType" value="61047538" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulink" />
+		<property name="productName" value="农资收购代付" />
+	    <property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+	</bean>
+	
+	<bean id="neiMengAgriculturalPaymentServicepay" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalPaymentPayService">
+		<property name="name" value="农资收购代付支付" />
+		<property name="msgType" value="21047538" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulink" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	
+	<bean id="neiMengAgriculturalPaymentServiceconfirm" 
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalPaymentConfirmService">
+		<property name="name" value="农资收购代付支付确认" />
+		<property name="msgType" value="31047538" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulink" />
+		<property name="appType" value="74" />
+		<property name="appSubType" value="2" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="agriculturalPrintSalesSlipPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgriculturalPrintSalesSlipPicImpl" />
+	<bean id="agentturalPrintSalesSlipPicImpl"
+		class="com.buybal.ums.qmf.impl.neimeng.agriculturals.NeiMengAgentPrintSalesSlipPicImpl" />
+    <bean id="neimengofflineupload"
+		class="com.buybal.ums.qmf.impl.neimeng.acquire.NeiMengAcquireOfflineUploadService">
+        <property name="name" value="内蒙离线交易上送" />
+        <property name="msgType" value="11047533" />
+        <property name="saleType" value="12" />
+        <property name="loginKey" value="neimeng" />
+	    <property name="merchantValidate" value="bcs_bound" />
+        <property name="appType" value="68" />
+ 	    <property name="appSubType" value="31" />
+   </bean>
+	<!-- add by wjg 2014-10-10 end-->
+	
+	<bean id="lotteryCentreCapitalAccumulationQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.lotterycentre.LotteryCentreCapitalAccumulationQueryService">
+		<property name="name" value="内蒙体彩中心资金归集查询" />
+		<property name="msgType" value="11047548" />
+		<property name="errMap" ref="neimenglotterycentreErrMap" />
+		<property name="loginKey" value="neimenglotterycentre" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	<bean id="lotteryCentreCapitalAccumulationOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.lotterycentre.LotteryCentreCapitalAccumulationOrderService">
+		<property name="name" value="内蒙体彩中心资金归集下单" />
+		<property name="msgType" value="61047548" />
+		<property name="productName" value="内蒙体彩中心资金归集" />
+	</bean>
+	<bean id="lotteryCentreCapitalAccumulationPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.lotterycentre.LotteryCentreCapitalAccumulationPayService">
+		<property name="name" value="内蒙体彩中心资金归集支付" />
+		<property name="msgType" value="21047548" />
+		<property name="errMap" ref="neimenglotterycentreErrMap" />
+		<property name="loginKey" value="neimenglotterycentre" />
+		<property name="isSimulate" value="true" />
+		
+	</bean>
+
+	<bean id="lotteryCentreCapitalAccumulationConfirmService"
+		class="com.buybal.ums.qmf.impl.neimeng.lotterycentre.LotteryCentreCapitalAccumulationConfirmService">
+		<property name="name" value="内蒙体彩中心资金归集缴费确认" />
+		<property name="msgType" value="31047548" />
+		<property name="errMap" ref="neimenglotterycentreErrMap" />
+		<property name="loginKey" value="neimenglotterycentre" />
+		<property name="isSimulate" value="true" />
+		
+	</bean>
+
+	<bean id="lotteryCentreCapitalAccumulationTransferReverseService"
+		class="com.buybal.ums.qmf.impl.neimeng.lotterycentre.LotteryCentreCapitalAccumulationTransferReverseService">
+		<property name="name" value="内蒙体彩中心资金归集冲正" />
+		<property name="msgType" value="41047548" />
+		<property name="errMap" ref="neimenglotterycentreErrMap" />
+		<property name="loginKey" value="neimenglotterycentre" />
+		<property name="isSimulate" value="true" />
+	</bean>
+	
+	<bean id="neimenglotterycentreErrMap" class="java.util.HashMap">
+			<constructor-arg>
+				<map>
+					<entry key="97" value="无此终端" />
+					<entry key="D1" value="数据库错误" />
+					<entry key="D7" value="用户号码长度有误" />
+					<entry key="E1" value="无此业务" />
+					<entry key="E2" value="业务状态不正常" />
+					<entry key="F1" value="无此商户" />
+					<entry key="P2" value="数据库错误" />
+					<entry key="UN" value="第三方处理失败" />
+				</map>
+			</constructor-arg>
+	</bean>
+	<!-- add by yuanzhen 20150518 st -->
+	<bean id="neimengMarketOrder"
+		  class="com.buybal.ums.qmf.impl.neimeng.discount.NeiMengMarketUnionOrderService">
+		<property name="name" value="营销联盟券下单"/>
+		<property name="msgType" value="61047271"/>
+		<property name="productName" value="营销联盟下单"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="40"/>
+		<property name="appSubType" value="61"/>
+		<!--<property name="loginKey" value="neimengmarket"/>-->
+		<!--<property name="isSimulate" value="false"/>-->
+	</bean>
+	<bean id="neimengMarketPay"
+		  class="com.buybal.ums.qmf.impl.neimeng.discount.NeiMengMarketUnionPayService">
+		<property name="name" value="营销联盟券支付"/>
+		<property name="msgType" value="21047271"/>
+		<property name="loginKey" value="neimengmarket"/>
+		<property name="isSimulate" value="true"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="40"/>
+		<property name="appSubType" value="61"/>
+	</bean>
+	<bean id="neimengMarketReverse"
+		  class="com.buybal.ums.qmf.impl.neimeng.discount.NeiMengMarketUnionReverseService">
+		<property name="name" value="营销联盟券冲正"/>
+		<property name="msgType" value="41047271"/>
+		<property name="loginKey" value="neimengmarket"/>
+		<property name="isSimulate" value="false"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="40"/>
+		<property name="appSubType" value="61"/>
+	</bean>
+	<!-- add by yuanzhen 20150518 ed -->
+	<!-- add by yuanzhen 20150703 st -->
+	<bean id="neimengCardBalanceQuery"
+		  class="com.buybal.ums.qmf.impl.neimeng.discount.NeiMengCardBalanceQueryService">
+		<property name="name" value="W280P内蒙刷卡打折0元支付，用余额查询代替。"/>
+		<property name="isSimulate" value="true"/>
+		<property name="msgType" value="27101301"/>
+		<property name="errMap" ref="balanceQueryErrMap"/>
+		<property name="loginKey" value="ulink_balance"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="40"/>
+		<property name="appSubType" value="61"/>
+	</bean>
+	<!-- add by yuanzhen 20150703 ed -->
+	<!-- add by yuanzhen 20150709 st: -->
+	<bean id="neimengCouponQueryOrderService"
+		  class="com.buybal.ums.qmf.impl.neimeng.couponbalance.CouponQueryOrderService">
+		<property name="name" value="内蒙优惠金额查询--下单"/>
+		<property name="msgType" value="61000244"/>
+	</bean>
+	<bean id="neimengCouponQueryBalanceService"
+		  class="com.buybal.ums.qmf.impl.neimeng.couponbalance.CouponQueryBalanceService">
+		<property name="name" value="内蒙优惠金额查询--支付"/>
+		<property name="msgType" value="21000244"/>
+		<property name="loginKey" value="ulink_balance"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false"/>
+	</bean>
+	<!-- add by yuanzhen 20150709 ed -->
+	<!-- add by weizenan 2015-09-02 内蒙 T+0消费  start -->
+	<bean id="neimengTPlusZeroConsumeOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.tpluszero.TPlusZeroConsumeOrderService">
+		<property name="name" value="T+0消费下单" />
+		<property name="msgType" value="67101245" />
+		<property name="productName" value="T+0消费下单" />
+	</bean>
+	
+	<bean id="neimengTPlusZeroConsumePayService"
+		class="com.buybal.ums.qmf.impl.neimeng.tpluszero.TPlusZeroConsumePayService">
+		<property name="name" value="T+0消费支付" />
+		<property name="msgType" value="27101245" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="1"/>
+		<property name="appSubType" value="4702"/>
+		<property name="isSimulate" value="true" />
+		<property name="target" value="ulink" />
+	</bean>
+	
+	<bean id="neimengTPlusZeroTransactionStatusQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.tpluszero.TPlusZeroTradeStatusQueryService">
+		<property name="name" value="T+0交易状态查询" />
+		<property name="msgType" value="17102245" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="1"/>
+		<property name="appSubType" value="4702"/>
+		<property name="target" value="ulink" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengTPlusZeroTradeLimitQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.tpluszero.TPlusZeroTradeLimitQueryService">
+		<property name="name" value="T+0消费额度查询" />
+		<property name="msgType" value="17101245" />
+		<property name="isSimulate" value="false" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="1"/>
+		<property name="appSubType" value="4702"/>
+		<property name="target" value="ulink" />
+	</bean>
+	<!-- add by weizenan 2015-09-06 ed -->
+	
+	<!-- add by weizenan 2015-09-07 内蒙 助农取款 start -->
+	<bean id="neimengAgricultureAidLoansOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.agricultureaid.AgricultureAidLoansOrderService">
+		<property name="name" value="助农取款下单" />
+		<property name="msgType" value="61047554" />
+		<property name="productName" value="助农取款" />
+	</bean>
+	
+	<bean id="neimengAgricultureAidLoansPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.agricultureaid.AgricultureAidLoansPayService">
+		<property name="name" value="助农取款支付" />
+		<property name="errMap" ref="neimengagricultureaidloanErrMap" />
+		<property name="msgType" value="21047554" />
+		<property name="loginKey" value="neimeng" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="1"/>
+		<property name="appSubType" value="4701"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengAgricultureAidLoansReverseService"
+		class="com.buybal.ums.qmf.impl.neimeng.agricultureaid.AgricultureAidLoansReverseService">
+		<property name="name" value="助农取款冲正" />
+		<property name="msgType" value="41047554" />
+		<property name="loginKey" value="neimeng" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="1"/>
+		<property name="appSubType" value="4701"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengagricultureaidloanErrMap" class="java.util.HashMap">
+			<constructor-arg>
+				<map>
+					<entry key="57" value="该卡种不能做此交易" />
+					<entry key="58" value="数据库错误" />
+					<entry key="03" value="该卡在该商户类型下不允许做此交易" />
+					<entry key="61" value="超出金额限制" />
+					<entry key="13" value="无效金额" />
+					<entry key="04" value="没收卡" />
+					<entry key="41" value="挂失卡 " />
+					<entry key="43" value="被窃卡" />
+				</map>
+			</constructor-arg>
+	</bean>
+	<!-- add by weizenan 2015-09-09 ed -->
+	
+	<!-- add by lkw 2015-09-09 内蒙微信支付 start -->
+	<bean id="neiMengWeiXinOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinOrderService">
+		<property name="name" value="内蒙(扫码支付)主扫下单" />
+		<property name="msgType" value="61047605" />
+		<property name="productName" value="内蒙扫码支付" />
+	</bean>
+	<bean id="neiMengWeiXinPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinPayService">
+		<property name="name" value="内蒙(扫码支付)主扫支付" />
+		<property name="msgType" value="21047605" />
+		<property name="target" value="prepaidCard" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="51"/>
+		<property name="isSimulate" value="false" />
+		<property name="saleType" value="55" />
+		<property name="loginType" value="institution" />
+	</bean>
+
+	<bean id="neiMengWeiXinCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinCancelService">
+		<property name="name" value="内蒙(扫码支付)主扫撤销" />
+		<property name="msgType" value="51047605" />
+		<property name="target" value="prepaidCard" />
+		<property name="saleType" value="55" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="51"/>
+		<property name="isSimulate" value="false" />
+		<property name="loginType" value="institution" />
+	</bean>
+	<bean id="neiMengWeiXinStateQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinStateQueryService">
+		<property name="name" value="内蒙(扫码支付)主扫订单状态查询" />
+		<property name="msgType" value="11047605" />
+		<property name="target" value="prepaidCard" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="51"/>
+		<property name="loginType" value="institution" />
+		<property name="isSimulate" value="false"/>
+	</bean>
+	<bean id="neiMengWeiXinScanCodePreOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderService">
+		<property name="name" value="内蒙(扫码支付)被扫支付下单" />
+		<property name="msgType" value="67101605" />
+		<property name="productName" value="内蒙扫码支付" />
+	</bean>
+	
+	
+	<bean id="neiMengWeiXinScanCodePreOrderPayService"
+			class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderPayService">
+		<property name="name" value="内蒙(扫码支付)被扫支付" />
+		<property name="msgType" value="27101605" />
+		<property name="target" value="prepaidCard" />
+		<property name="saleType" value="55" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="51"/>
+		<property name="isSimulate" value="false"/>
+		<property name="loginType" value="institution" />
+	</bean>
+	
+	<bean id="neiMengWeiXinScanCodePreOrderStateQueryService"
+		class="com.buybal.ums.qmf.impl.neimeng.weixin.WeiXinScanCodePreOrderStateQueryService">
+		<property name="name" value="内蒙(扫码支付)被扫状态查询" />
+		<property name="msgType" value="17101605" />
+		<property name="target" value="prepaidCard" />
+		<property name="isSimulate" value="false"/>
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="51"/>
+		<property name="loginType" value="institution" />
+	</bean>
+	<!-- add by weizenan 20151012 内蒙预授权 -->
+	<bean id="neimengPreAuthOrder"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthOrderService">
+		<property name="name" value="预授权下单" />
+		<property name="msgType" value="67101543" />
+		<property name="loginKey" value="neimeng" />
+		<property name="productName" value="预授权" />
+	</bean>
+	
+
+	<bean id="neimengPreAuth"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthService">
+		<property name="name" value="预授权" />
+		<property name="msgType" value="27101543" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false"/>
+	</bean>
+	
+	<bean id="neimengPreAuthCancel"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthCancelService">
+		<property name="name" value="预授权撤销" />
+		<property name="msgType" value="57101543" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengPreAuthCompleteOrder"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthCompleteOrderService">
+		<property name="name" value="预授权完成下单" />
+		<property name="msgType" value="67102543" />
+		<property name="productName" value="预授权完成" />
+		<property name="loginKey" value="neimeng" />
+	</bean>
+	
+	<bean id="neimengPreAuthCompletePay"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthCompletePayService">
+		<property name="name" value="预授权完成" />
+		<property name="msgType" value="27102543" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengPreAuthCompleteCancelPay"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthCompleteCancelService">
+		<property name="name" value="预授权完成撤销" />
+		<property name="msgType" value="57102543" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimengPreAuthQuery"
+		class="com.buybal.ums.qmf.impl.neimeng.preauth.PreAuthQueryService">
+		<property name="name" value="预授权查询" />
+		<property name="msgType" value="17101543" />
+	</bean>
+	<!-- add by weizenan 20151020 内蒙预授权 -->
+	
+	<!-- add by weizenan 20151019 内蒙分期 -->
+	<bean id="neimenginstallmentorder"
+		class="com.buybal.ums.qmf.impl.neimeng.installment.NeiMengInstallmentOrderService">
+		<property name="name" value="内蒙分期消费下单" />
+		<property name="msgType" value="61047307" />
+		<property name="productName" value="分期付款" />
+		<property name="loginKey" value="neimeng" />
+	</bean>
+	
+	<bean id="neimenginstallpay"
+		class="com.buybal.ums.qmf.impl.neimeng.installment.NeiMengInstallmentPayService">
+		<property name="name" value="内蒙分期消费支付" />
+		<property name="msgType" value="21047307" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="neimenginstallcancel"
+		class="com.buybal.ums.qmf.impl.neimeng.installment.NeiMengInstallmentCancelService">
+		<property name="name" value="内蒙分期消费撤销" />
+		<property name="msgType" value="51047307" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="loginKey" value="neimeng" />
+		<property name="appType" value="68"/>
+		<property name="appSubType" value="31"/>
+		<property name="isSimulate" value="false" />
+	</bean>
+	<!-- add by weizenan 20151020 内蒙分期 -->
+	
+	 <bean id="nmpostongorder" 
+	 		class="com.buybal.ums.qmf.impl.neimeng.postong.PosTongOrderService">
+	 	<property name="name" value="内蒙收单POS通支付下单" />
+		<property name="msgType" value="61047522" />
+		<property name="productName" value="POS通支付" />
+	</bean>
+	
+	<bean id="nmpostongpay" 
+		class="com.buybal.ums.qmf.impl.neimeng.postong.PosTongPayService"> 
+		<property name="name" value="内蒙收单POS通支付" />
+		<property name="msgType" value="21047522" />
+		<property name="saleType" value="38" />
+		<property name="loginType" value="institution" />
+		<property name="target" value="ulinkAddValue" />
+		<property name="merchantValidate" value="bcs_bound" />
+		<property name="appType" value="68" />
+		<property name="appSubType" value="6" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<bean id="nmpostongreverse"	 
+		class="com.buybal.ums.qmf.impl.neimeng.postong.PosTongReverseService">	 
+		<property name="name" value="内蒙收单POS通支付冲正" />
+		<property name="msgType" value="41047522" />
+		<property name="loginKey" value="origin" />
+		<property name="target" value="ulinkAddValue" />
+		<property name="appType" value="68" />
+		<property name="appSubType" value="6" />
+	</bean>
+	
+	<bean id="nmpostongcancel"
+	 	class="com.buybal.ums.qmf.impl.neimeng.postong.PosTongCancelService"> 
+		<property name="name" value="内蒙收单POS通支付撤销" />
+		<property name="msgType" value="51047522" />	 
+		<property name="loginType" value="institution" />	 
+		<property name="target" value="ulinkAddValue" />
+		<property name="merchantValidate" value="bcs_bound" />	 
+		<property name="saleType" value="38" />
+		<property name="appType" value="68" />
+		<property name="appSubType" value="6" />
+		<property name="isSimulate" value="false" />
+	</bean>
+	
+	<!-- add by weizenan 2015-12-01 内蒙通过预付卡接入翼支付 start -->
+	<bean id="neimengBestPayOrderService"
+		class="com.buybal.ums.qmf.impl.neimeng.bestpay.BestPayOrderService">
+		<property name="name" value="翼支付消费下单" />
+		<property name="msgType" value="67101522" />
+		<property name="productName" value="翼支付" />
+	</bean>
+	
+	<bean id="neimengBestPayPayService"
+		class="com.buybal.ums.qmf.impl.neimeng.bestpay.BestPayPayService">
+		<property name="name" value="翼支付消费支付" />
+		<property name="msgType" value="27101522" />
+		<property name="errMap" ref="neimengBestPayErrMap" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="saleType" value="56" />
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="52"/>
+		<property name="isSimulate" value="false" />
+		<property name="target" value="prepaidCard" />
+	</bean>
+	
+	<bean id="neimengBestPayCancelService"
+		class="com.buybal.ums.qmf.impl.neimeng.bestpay.BestPayCancelService">
+		<property name="name" value="翼支付消费支付撤销" />
+		<property name="msgType" value="57101522" />
+		<property name="loginType" value="institution" />
+		<property name="merchantValidate" value="bcs_bound"/>
+		<property name="appType" value="53"/>
+		<property name="appSubType" value="52"/>
+		<property name="isSimulate" value="false" />
+		<property name="target" value="prepaidCard" />
+	</bean>
+	
+	<bean id="neimengBestPayErrMap" class="java.util.HashMap">
+	<constructor-arg>
+		<map>
+			<entry key="00" value="交易成功" />
+			<entry key="03" value="商户未登记" />
+			<entry key="05" value="无效终端" />
+			<entry key="08" value="终端未签到" />
+			<entry key="12" value="交易失败，无效交易" />
+			<entry key="13" value="交易失败，无效金额" />
+			<entry key="14" value="交易失败，无效卡号" />
+			<entry key="15" value="此帐户已冻结" />
+			<entry key="16" value="卡帐户不存在" />
+			<entry key="17" value="帐户状态不正确" />
+			<entry key="18" value="账户未启用" />
+			<entry key="20" value="交易失败" />
+			<entry key="22" value="" />
+			<entry key="25" value="交易失败" />
+			<entry key="30" value="交易失败，请重试" />
+			<entry key="31" value="当日消费金额超限" />
+			<entry key="32" value="单笔交易金额超限" />
+			<entry key="36" value="" />
+			<entry key="37" value="没收卡，请联系发卡行" />
+			<entry key="38" value="密码错误次数超限" />
+			<entry key="39" value="" />
+			<entry key="41" value="联系管理员" />
+			<entry key="51" value="余额不足，请查询" />
+			<entry key="52" value="预授权完成金额大于预授权金额" />
+			<entry key="54" value="已过有效期" />
+			<entry key="55" value="密码错，请重试" />
+			<entry key="61" value="金额太大" />
+			<entry key="63" value="" />
+			<entry key="64" value="交易失败，请联系发卡行" />
+			<entry key="68" value="交易超时，请重试" />
+			<entry key="75" value="密码错误次数超限" />
+			<entry key="77" value="" />
+			<entry key="78" value="" />
+			<entry key="79" value="" />
+			<entry key="88" value="交易成功" />
+			<entry key="96" value="交易失败，请稍后重试" />
+			<entry key="97" value="终端未登记" />
+			<entry key="99" value="校验错，请重新签到" />
+			<entry key="A0" value="校验错，请重新签到" />
+
+		</map>
+	</constructor-arg>
+	</bean>
+	<!-- add by weizenan 2016-01-14 ed -->
+</beans>	
+	
